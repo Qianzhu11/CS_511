@@ -6,10 +6,16 @@ public class Exercise {
 	
 	private ApparatusType at;
 	private Map<WeightPlateSize, Integer> weight;
-	private int size;
+	private int duration;
 	
 	public Exercise(ApparatusType at, Map<WeightPlateSize, Integer> weight, int duration) {
 		this.at = at;
 		this.weight = weight;
+		this.duration = duration;
+	}
+	
+	public enum ApparatusType {
+		LEGPRESSMACHINE , BARBELL , HACKSQUATMACHINE , LEGEXTENSIONMACHINE , LEGCURLMACHINE , 
+		LATPULLDOWNMACHINE , PECDECKMACHINE , CABLECROSSOVERMACHINE
 	}
 }
