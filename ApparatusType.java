@@ -16,15 +16,11 @@ public class ApparatusType {
 		LATPULLDOWNMACHINE , PECDECKMACHINE , CABLECROSSOVERMACHINE
 	}
 	
-	public static ApparatusType generateRandom(int id) {
-		List<at> ApparatusTypeToList = Arrays.asList(at.values());
-		int atLength = ApparatusTypeToList.size();
+	public static ApparatusType generateRandomAt(int id) {
+		List<at> atToList = Arrays.asList(at.values());
+		int atLength = atToList.size();
 		int i = (int)(Math.random() * id % atLength);
-		return new ApparatusType(ApparatusTypeToList.get(i));
+		return new ApparatusType(atToList.get(i));
 	}
-	
-	public static void main(String[] args) {
-		ApparatusType a = generateRandom(10);
-		System.out.println(a.apparatusType);
-	}
+
 }
