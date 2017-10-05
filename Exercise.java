@@ -14,17 +14,18 @@ public class Exercise {
 		this.duration = duration;
 	}
 	
-	public enum ApparatusType {
+	public enum at {
 		LEGPRESSMACHINE, BARBELL, HACKSQUATMACHINE, LEGEXTENSIONMACHINE, LEGCURLMACHINE, 
 		LATPULLDOWNMACHINE ,PECDECKMACHINE ,CABLECROSSOVERMACHINE
 	}
 	
-	public enum WeightPlateSize {
+	public enum wps {
 		SMALL_3KG , MEDIUM_5KG , LARGE_10KG
 	}
 	
 	
 	public static Exercise generateRandomExercise(Map<WeightPlateSize, Integer> noOfWeightPlates) {
+		ApparatusType at = ApparatusType.generateRandomAt(10);
 		double d = Math.random() * 10;
 		return null;
 	}
