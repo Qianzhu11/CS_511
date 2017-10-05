@@ -18,4 +18,15 @@ public class Exercise {
 		LEGPRESSMACHINE, BARBELL, HACKSQUATMACHINE, LEGEXTENSIONMACHINE, LEGCURLMACHINE, 
 		LATPULLDOWNMACHINE ,PECDECKMACHINE ,CABLECROSSOVERMACHINE
 	}
+	
+	public enum WeightPlateSize {
+		SMALL_3KG , MEDIUM_5KG , LARGE_10KG
+	}
+	
+	
+	public static Exercise generateRandomExercise(Map<WeightPlateSize, Integer> noOfWeightPlates) {
+		double d = Math.random() * 10;
+		return null;
+	}
+	
 }

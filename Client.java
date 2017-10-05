@@ -17,9 +17,9 @@ public class Client {
 	}
 	
 	
-	public static Client generateRandom(int id, Map<WeightPlateSize, Integer> noOfWeightPlate) {
+	public static Client generateRandomClient(int id, Map<WeightPlateSize, Integer> noOfWeightPlate) {
 		
-		return null;
+		return new Client(id);
 	}
 	
 }
