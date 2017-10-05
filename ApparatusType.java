@@ -19,7 +19,12 @@ public class ApparatusType {
 	public static ApparatusType generateRandom(int id) {
 		List<at> ApparatusTypeToList = Arrays.asList(at.values());
 		int atLength = ApparatusTypeToList.size();
-		int i = (int)Math.random() * atLength;
+		int i = (int)(Math.random() * id % atLength);
 		return new ApparatusType(ApparatusTypeToList.get(i));
+	}
+	
+	public static void main(String[] args) {
+		ApparatusType a = generateRandom(10);
+		System.out.println(a.apparatusType);
 	}
 }
