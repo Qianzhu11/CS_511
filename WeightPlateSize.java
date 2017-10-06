@@ -10,7 +10,7 @@ public class WeightPlateSize {
 		this.weightPlateSize = weightPlateSize;
 	}
 	
-	public enum wps {
+	public static enum wps {
 		SMALL_3KG, MEDIUM_5KG, LARGE_10KG
 	}
 	
