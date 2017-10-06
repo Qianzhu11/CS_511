@@ -11,6 +11,10 @@ public class ApparatusType {
 		this.apparatusType = apparatusType;
 	}
 	
+	public String toString() {
+		return this.apparatusType.name();
+	}
+	
 	public enum at {
 		LEGPRESSMACHINE, BARBELL, HACKSQUATMACHINE, LEGEXTENSIONMACHINE, LEGCURLMACHINE, 
 		LATPULLDOWNMACHINE , PECDECKMACHINE , CABLECROSSOVERMACHINE

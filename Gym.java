@@ -35,7 +35,7 @@ public class Gym implements Runnable {
 		noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)Math.random() * 2);
 		noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)Math.random() * 2);
 		noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)Math.random() * 2);
-		Client c = Client.generateRandomClient(++id, noOfWeightPlates);
+		Client c = Client.generateRandomClient(++id);
 		c.getRoutine();
 	}
 	

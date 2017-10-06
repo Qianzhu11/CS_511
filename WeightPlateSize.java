@@ -14,6 +14,10 @@ public class WeightPlateSize {
 		SMALL_3KG, MEDIUM_5KG, LARGE_10KG
 	}
 	
+	public String toString() {
+		return this.weightPlateSize.name();
+	}
+	
 	public static WeightPlateSize generateRandomWps(int id) {
 		List<wps> wpsToList = Arrays.asList(wps.values());
 		int wpsLength = wpsToList.size();

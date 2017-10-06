@@ -20,11 +20,23 @@ public class Exercise {
 		LATPULLDOWNMACHINE ,PECDECKMACHINE ,CABLECROSSOVERMACHINE
 	}
 	
+	public String toString() {
+		return this.at.toString() + "," + this.weight.toString() + " " + this.duration;
+	}
 	
 	public static Exercise generateRandomExercise(Map<WeightPlateSize, Integer> noOfWeightPlates) {
 		ApparatusType at = ApparatusType.generateRandomAt(10);
-		int d = (int)Math.random() * 10;
+		int d = (int)(Math.random() * 10000);
 		return new Exercise(at, noOfWeightPlates, d);
 	}
 	
+	public static void main(String[] args) {
+		Map<WeightPlateSize, Integer> weight = new HashMap<WeightPlateSize, Integer>();
+		weight.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)(Math.random() * 3));
+		weight.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)(Math.random() * 3));
+		weight.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)(Math.random() * 3));
+		Exercise e = generateRandomExercise(weight);
+		System.out.println(e);
+	}
+
 }
