@@ -26,6 +26,10 @@ public class Gym implements Runnable {
 	private Semaphore large = new Semaphore(75, true);
 	private int id = 0;
 	
+	public WeightPlateSize wpsSmall = new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG);
+	public WeightPlateSize wpsMedium = new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG);
+	public WeightPlateSize wpsLarge = new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG);
+	
 	ExecutorService es = Executors.newFixedThreadPool(GYM_SIZE);
 	
 	public void run() {
@@ -34,16 +38,12 @@ public class Gym implements Runnable {
 		
 		int k = (int)(Math.random() * 5) + 15;
 		
-		noOfWeightPlates = new HashMap<WeightPlateSize, Integer>();
-		
 		for (int i = 0; i < k; i++) {
-			noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)(Math.random() * 3));
-			noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)(Math.random() * 3));
-			noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)(Math.random() * 3));
-			c.addExercise(Exercise.generateRandomExercise(noOfWeightPlates));
+	
 		}
-		
-		for (int i = 0; i < routine.size(); i++) {
+		//System.out.println(weight);
+		/*
+		for (int i = 0; i < k; i++) {
 			ApparatusType at = ((Exercise)routine.get(i)).getApparatus();
 			String ats = at.toString();
 			try {
@@ -57,16 +57,13 @@ public class Gym implements Runnable {
 					case "PECDECKMACHINE": pm.acquire();
 					case "CABLECROSSOVERMACHINE": ccm.acquire();
 				}
-			
-				Map<WeightPlateSize, Integer> weight = ((Exercise)routine.get(i)).getWeight();
-				Integer smallTimes = weight.get(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG));
-				Integer mediumTimes = weight.get(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG));
-				Integer largeTimes = weight.get(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG));
 				
-				System.out.println(lps.availablePermits());
-				//System.out.println(medium.availablePermits());
-				//System.out.println(large.availablePermits());
-				/*if (small.availablePermits() >= smallTimes.intValue()) {
+				Map<WeightPlateSize, Integer> weight = ((Exercise)routine.get(i)).getWeight();
+				Integer smallTimes = weight.get(wpsSmall);
+				Integer mediumTimes = weight.get(wpsMedium);
+				Integer largeTimes = weight.get(wpsLarge);
+				
+				if (small.availablePermits() >= smallTimes) {
 					for (int j = 0; j < smallTimes.intValue(); j++) {
 						small.acquire();
 					}
@@ -83,15 +80,10 @@ public class Gym implements Runnable {
 						large.acquire();
 					}
 				}
-				
-				System.out.println("Client beginning to do the routine");
-				System.out.println(l);
-				
-				int duration = ((Exercise)l.get(i)).getDuration();
+					
+				int duration = ((Exercise)routine.get(i)).getDuration();
 				
 				Thread.sleep((long)duration);
-				
-				System.out.println("Client completes today's routine");
 				
 				small.release(smallTimes);
 				
@@ -109,15 +101,17 @@ public class Gym implements Runnable {
 					case "PECDECKMACHINE": pm.release();
 					case "CABLECROSSOVERMACHINE": ccm.release();
 					
-				}	*/
+				}
 			}
 			catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-	} 
-	
+		System.out.println(routine);
+		System.out.println("Client" + c.id + " completes today's routine");*/
+	}
+
 	public static void main(String[] args) {
 		new Thread(new Gym()).start();
 	}

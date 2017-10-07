@@ -36,17 +36,23 @@ public class Client {
 	
 
 	public static void main(String[] args) {
+		WeightPlateSize wpsSmall = new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG);
+		WeightPlateSize wpsMedium = new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG);
+		WeightPlateSize wpsLarge = new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG);
+		
 		Map<WeightPlateSize, Integer> weight = new HashMap<WeightPlateSize, Integer>();
-		weight.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)(Math.random() * 3));
-		weight.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)(Math.random() * 3));
-		weight.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)(Math.random() * 3));
+		weight.put(wpsSmall, (int)(Math.random() * 3));
+		weight.put(wpsMedium, (int)(Math.random() * 3));
+		weight.put(wpsLarge, (int)(Math.random() * 3));
 		
 		Client c = generateRandomClient(1);
 		c.routine.add(Exercise.generateRandomExercise(weight));
 		c.routine.add(Exercise.generateRandomExercise(weight));
 		c.routine.add(Exercise.generateRandomExercise(weight));
-		List l = c.getRoutine();
+		List routine = c.getRoutine();
 		
-		System.out.println(l);
+		System.out.println(routine);
+		weight.put(wpsSmall, (int)(Math.random() * 3) + 1);
+		System.out.println(routine);
 	}
 }
