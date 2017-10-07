@@ -33,6 +33,10 @@ public class Exercise {
 		return this.weight;
 	}
 	
+	public int getDuration() {
+		return this.duration;
+	}
+	
 	public static void main(String[] args) {
 		Map<WeightPlateSize, Integer> weight = new HashMap<WeightPlateSize, Integer>();
 		weight.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)(Math.random() * 3));
