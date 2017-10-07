@@ -15,11 +15,6 @@ public class Exercise {
 		this.duration = duration;
 	}
 	
-	public enum at {
-		LEGPRESSMACHINE, BARBELL, HACKSQUATMACHINE, LEGEXTENSIONMACHINE, LEGCURLMACHINE, 
-		LATPULLDOWNMACHINE ,PECDECKMACHINE ,CABLECROSSOVERMACHINE
-	}
-	
 	public String toString() {
 		return this.at.toString() + "," + this.weight.toString() + " " + this.duration;
 	}
@@ -28,6 +23,14 @@ public class Exercise {
 		ApparatusType at = ApparatusType.generateRandomAt(10);
 		int d = (int)(Math.random() * 10000);
 		return new Exercise(at, noOfWeightPlates, d);
+	}
+	
+	public ApparatusType getApparatus() {
+		return this.at;
+	}
+	
+	public Map<WeightPlateSize, Integer> getWeight() {
+		return this.weight;
 	}
 	
 	public static void main(String[] args) {

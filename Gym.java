@@ -10,7 +10,7 @@ public class Gym implements Runnable {
 	
 	private static final int GYM_SIZE = 30;
 	private static final int GYM_REGISTERED_CLINETS = 10000;
-	private static Map<WeightPlateSize, Integer> noOfWeightPlates;
+	private Map<WeightPlateSize, Integer> noOfWeightPlates;
 	private Set<Integer> clients;
 	private ExecutorService executor;
 	private Semaphore lps = new Semaphore(5, true);
@@ -30,13 +30,32 @@ public class Gym implements Runnable {
 	ExecutorService es = Executors.newFixedThreadPool(GYM_SIZE);
 	
 	public void run() {
-		
-		noOfWeightPlates = new HashMap<WeightPlateSize, Integer>();
-		noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)Math.random() * 2);
-		noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)Math.random() * 2);
-		noOfWeightPlates.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)Math.random() * 2);
 		Client c = Client.generateRandomClient(++id);
-		c.getRoutine();
+		List l = c.getRoutine();
+		
+		for (int i = 0; i < l.size(); i++) {
+			ApparatusType at = ((Exercise)l.get(i)).getApparatus();
+			String ats = at.toString();
+			try {
+				switch (ats) {
+					case "LEGPRESSMACHINE": lps.acquire();
+					case "BARBELL": bb.acquire();
+					case "HACKSQUATMACHINE": hsm.acquire();
+					case "LEGEXTENSIONMACHINE": lem.acquire();
+					case "LEGCURLMACHINE": lcm.acquire();
+					case "LATPULLDOWNMACHINE": lpm.acquire();
+					case "PECDECKMACHINE": pm.acquire();
+					case "CABLECROSSOVERMACHINE": ccm.acquire();
+				}
+			}
+
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Map<WeightPlateSize, Integer> weight = ((Exercise)l.get(i)).getWeight();
+		}	
 	}
 	
 	public static void main(String[] args) {
