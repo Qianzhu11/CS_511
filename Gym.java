@@ -10,7 +10,6 @@ public class Gym implements Runnable {
 	
 	private static final int GYM_SIZE = 30;
 	private static final int GYM_REGISTERED_CLINETS = 10000;
-	private Map<WeightPlateSize, Integer> noOfWeightPlates;
 	private Set<Integer> clients;
 	private ExecutorService executor;
 	private Semaphore lps = new Semaphore(5, true);
@@ -33,16 +32,21 @@ public class Gym implements Runnable {
 	ExecutorService es = Executors.newFixedThreadPool(GYM_SIZE);
 	
 	public void run() {
+		Map noOfWeightPlates = new HashMap<WeightPlateSize, Integer>();
 		Client c = Client.generateRandomClient(++id);
 		List routine = c.getRoutine();
-		
+		int durationSum = 0;
+
 		int k = (int)(Math.random() * 5) + 15;
 		
 		for (int i = 0; i < k; i++) {
-	
+			noOfWeightPlates.put(wpsSmall, (int)(Math.random() * 10));
+			noOfWeightPlates.put(wpsMedium, (int)(Math.random() * 10));
+			noOfWeightPlates.put(wpsLarge, (int)(Math.random() * 10));
+			Exercise e = Exercise.generateRandomExercise(noOfWeightPlates);
+			c.addExercise(e);
 		}
-		//System.out.println(weight);
-		/*
+		
 		for (int i = 0; i < k; i++) {
 			ApparatusType at = ((Exercise)routine.get(i)).getApparatus();
 			String ats = at.toString();
@@ -82,6 +86,7 @@ public class Gym implements Runnable {
 				}
 					
 				int duration = ((Exercise)routine.get(i)).getDuration();
+				durationSum += duration;
 				
 				Thread.sleep((long)duration);
 				
@@ -109,10 +114,41 @@ public class Gym implements Runnable {
 			}
 		}
 		System.out.println(routine);
-		System.out.println("Client" + c.id + " completes today's routine");*/
+		System.out.println("Client" + id + " completes today's routine, using " + durationSum + "ms");
+	}
+}
+
+class Client implements Runnable {
+	
+	private int id;
+	private List<Exercise> routine = new ArrayList<Exercise>();
+	private static Map<WeightPlateSize, Integer> weight;
+	
+	public Client(int id) {
+		this.id = id;
 	}
 
-	public static void main(String[] args) {
-		new Thread(new Gym()).start();
+	static {
+		weight = new HashMap<WeightPlateSize, Integer>();
+		weight.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)Math.random() * 2);
+		weight.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)Math.random() * 2);
+		weight.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)Math.random() * 2);
+	}
+	
+	public void addExercise(Exercise e) {
+		routine.add(e);
+	}
+	
+	public List<Exercise> getRoutine() {
+		return this.routine;
+	}
+	
+	
+	public static Client generateRandomClient(int id) {
+		return new Client(id);
+	}
+	
+	public void run() {
+		
 	}
 }

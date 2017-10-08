@@ -21,7 +21,7 @@ public class Exercise {
 	
 	public static Exercise generateRandomExercise(Map<WeightPlateSize, Integer> noOfWeightPlates) {
 		ApparatusType at = ApparatusType.generateRandomAt(10);
-		int d = (int)(Math.random() * 100);
+		int d = (int)(Math.random() * 200);
 		return new Exercise(at, noOfWeightPlates, d);
 	}
 	
