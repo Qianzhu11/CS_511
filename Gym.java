@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Gym implements Runnable {
 	
 	private static final int GYM_SIZE = 30;
-	private static final int GYM_REGISTERED_CLINETS = 10000;
-	private Set<Integer> clients;
+	private static final int GYM_REGISTERED_CLIENTS = 10000;
+	private List<Integer> clients;
 	private ExecutorService executor;
 	private Semaphore lps = new Semaphore(5, true);
 	private Semaphore bb = new Semaphore(5, true);
@@ -23,17 +23,21 @@ public class Gym implements Runnable {
 	private Semaphore small = new Semaphore(110, true);
 	private Semaphore medium = new Semaphore(90, true);
 	private Semaphore large = new Semaphore(75, true);
-	private int id = 0;
 	
 	public WeightPlateSize wpsSmall = new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG);
 	public WeightPlateSize wpsMedium = new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG);
 	public WeightPlateSize wpsLarge = new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG);
 	
 	ExecutorService es = Executors.newFixedThreadPool(GYM_SIZE);
+	{	clients = new ArrayList<Integer>();
+		for (int i = 0; i < GYM_REGISTERED_CLIENTS; i++) {
+			clients.add(i);
+		}
+	}
 	
 	public void run() {
 		Map noOfWeightPlates = new HashMap<WeightPlateSize, Integer>();
-		Client c = Client.generateRandomClient(++id);
+		Client c = Client.generateRandomClient(clients.get((int)(Math.random() * GYM_REGISTERED_CLIENTS)));
 		List routine = c.getRoutine();
 		int durationSum = 0;
 
@@ -114,7 +118,7 @@ public class Gym implements Runnable {
 			}
 		}
 		System.out.println(routine);
-		System.out.println("Client" + id + " completes today's routine, using " + durationSum + "ms");
+		System.out.println("Client" + c.getId() + " completes today's routine, using " + durationSum + "ms");
 	}
 }
 
@@ -143,6 +147,9 @@ class Client implements Runnable {
 		return this.routine;
 	}
 	
+	public int getId() {
+		return this.id;
+	}
 	
 	public static Client generateRandomClient(int id) {
 		return new Client(id);
