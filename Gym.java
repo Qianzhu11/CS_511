@@ -12,6 +12,25 @@ public class Gym implements Runnable {
 	private static final int GYM_REGISTERED_CLIENTS = 10000;
 	private List<Integer> clients;
 	private ExecutorService executor;
+	
+	public void run() {
+		executor = Executors.newFixedThreadPool(GYM_SIZE);
+		clients = new ArrayList<Integer>();
+		for (int i = 0; i < GYM_REGISTERED_CLIENTS; i++) {
+			clients.add(i);
+		}
+		for (int i = 0; i < GYM_REGISTERED_CLIENTS; i++) {
+			Client c = Client.generateRandomClient(clients.get((int)(Math.random() * GYM_REGISTERED_CLIENTS)));
+			executor.execute(c);
+		}	
+	}
+}
+
+class Client implements Runnable {
+	
+	private int id;
+	private List<Exercise> routine = new ArrayList<Exercise>();
+	private static Map<WeightPlateSize, Integer> weight;
 	private Semaphore lps = new Semaphore(5, true);
 	private Semaphore bb = new Semaphore(5, true);
 	private Semaphore hsm = new Semaphore(5, true);
@@ -28,25 +47,43 @@ public class Gym implements Runnable {
 	public WeightPlateSize wpsMedium = new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG);
 	public WeightPlateSize wpsLarge = new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG);
 	
-	ExecutorService es = Executors.newFixedThreadPool(GYM_SIZE);
-	{	clients = new ArrayList<Integer>();
-		for (int i = 0; i < GYM_REGISTERED_CLIENTS; i++) {
-			clients.add(i);
-		}
+	Integer smallTimes = new Integer(0);
+	Integer mediumTimes = new Integer(0);
+	Integer largeTimes = new Integer(0);
+	
+	
+	public Client(int id) {
+		this.id = id;
+	}
+	
+	public void addExercise(Exercise e) {
+		routine.add(e);
+	}
+	
+	public List<Exercise> getRoutine() {
+		return this.routine;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public static Client generateRandomClient(int id) {
+		return new Client(id);
 	}
 	
 	public void run() {
 		Map noOfWeightPlates = new HashMap<WeightPlateSize, Integer>();
-		Client c = Client.generateRandomClient(clients.get((int)(Math.random() * GYM_REGISTERED_CLIENTS)));
+		Client c = Client.generateRandomClient((int)(Math.random() * 100));
 		List routine = c.getRoutine();
 		int durationSum = 0;
 
 		int k = (int)(Math.random() * 5) + 15;
 		
 		for (int i = 0; i < k; i++) {
-			noOfWeightPlates.put(wpsSmall, (int)(Math.random() * 10));
-			noOfWeightPlates.put(wpsMedium, (int)(Math.random() * 10));
-			noOfWeightPlates.put(wpsLarge, (int)(Math.random() * 10));
+			noOfWeightPlates.put(wpsSmall, (int)(Math.random() * 4));
+			noOfWeightPlates.put(wpsMedium, (int)(Math.random() * 3));
+			noOfWeightPlates.put(wpsLarge, (int)(Math.random() * 3));
 			Exercise e = Exercise.generateRandomExercise(noOfWeightPlates);
 			c.addExercise(e);
 		}
@@ -67,10 +104,10 @@ public class Gym implements Runnable {
 				}
 				
 				Map<WeightPlateSize, Integer> weight = ((Exercise)routine.get(i)).getWeight();
-				Integer smallTimes = weight.get(wpsSmall);
-				Integer mediumTimes = weight.get(wpsMedium);
-				Integer largeTimes = weight.get(wpsLarge);
-				
+				c.smallTimes = weight.get(wpsSmall);
+				c.mediumTimes = weight.get(wpsMedium);
+				c.largeTimes = weight.get(wpsLarge);
+				//System.out.println(weight);
 				if (small.availablePermits() >= smallTimes) {
 					for (int j = 0; j < smallTimes.intValue(); j++) {
 						small.acquire();
@@ -119,43 +156,5 @@ public class Gym implements Runnable {
 		}
 		System.out.println(routine);
 		System.out.println("Client" + c.getId() + " completes today's routine, using " + durationSum + "ms");
-	}
-}
-
-class Client implements Runnable {
-	
-	private int id;
-	private List<Exercise> routine = new ArrayList<Exercise>();
-	private static Map<WeightPlateSize, Integer> weight;
-	
-	public Client(int id) {
-		this.id = id;
-	}
-
-	static {
-		weight = new HashMap<WeightPlateSize, Integer>();
-		weight.put(new WeightPlateSize(WeightPlateSize.wps.SMALL_3KG), (int)Math.random() * 2);
-		weight.put(new WeightPlateSize(WeightPlateSize.wps.MEDIUM_5KG), (int)Math.random() * 2);
-		weight.put(new WeightPlateSize(WeightPlateSize.wps.LARGE_10KG), (int)Math.random() * 2);
-	}
-	
-	public void addExercise(Exercise e) {
-		routine.add(e);
-	}
-	
-	public List<Exercise> getRoutine() {
-		return this.routine;
-	}
-	
-	public int getId() {
-		return this.id;
-	}
-	
-	public static Client generateRandomClient(int id) {
-		return new Client(id);
-	}
-	
-	public void run() {
-		
 	}
 }
